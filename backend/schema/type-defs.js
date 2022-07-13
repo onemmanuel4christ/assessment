@@ -11,6 +11,7 @@ const typeDefs = gql`
 
   input UsersInputFilter {
     status: String
+    name: String
   }
 
   type Query {

@@ -48,12 +48,13 @@ function App() {
 
   return (
     <Wrapper>
-      <h1 style={{textAlign: 'center', margin: '20px'}}>Assesment on Graphql</h1>
+      {data ? <>
+        <h1 style={{textAlign: 'center', margin: '20px'}}>Frontend Assesment</h1>
       <SearchDiv>
         <InputBox
           onChange={(e) => operations.updateFilter("name", e.target.value)}
           type="string"
-          placeholder='Search for name, status, type '
+          placeholder='Search by name '
         />
          <Button
         onClick={() =>
@@ -79,8 +80,6 @@ function App() {
               <Options value="current">Fixed</Options>
             </Select>
         </FilterDiv>
-      <br/>
-      
           {data.users.map((user) => (
         <Container>
         <Left>
@@ -112,8 +111,7 @@ function App() {
         </Right>
         </Container>
       ))}
-
-      <br/>
+      </> : <p>No Data found please try again later</p>}
 
      
     </Wrapper>
@@ -181,10 +179,15 @@ const InputBox= styled.input`
   font-size: 15px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  ::placeholder{
+    color: gray;
+    font-size: 16px;
+  }
   `
 
 const Button = styled.button`
-  height: 100%;
   padding: 10px;
   border-top-right-radius: 5px;
   border-top-right-radius: 5px;
@@ -192,6 +195,8 @@ const Button = styled.button`
   border: 0;
   background-color: paleturquoise;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
 `
 
 const FilterDiv = styled.div`
@@ -219,6 +224,7 @@ const Avatar = styled.img`
   margin-top: 20px;
   border-radius: 50%;
   align-self: center;
+  object-fit:cover;
 `
 
 const Date = styled.span`
@@ -226,6 +232,7 @@ const Date = styled.span`
   font-size: 18px;
   font-weight: 500;
   width: 100%;
+  text-align: center;
   position: absolute;
   top: 10px;
   left: 0;
