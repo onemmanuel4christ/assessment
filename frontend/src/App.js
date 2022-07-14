@@ -36,7 +36,7 @@ function App() {
    return mutateData(val )
   }
   return (
-    <>
+    <Body>
      <Header>
         <h1>Frontend Assesment</h1>
         <RightHeader>
@@ -99,7 +99,7 @@ function App() {
        </Container>
      ))}
    </Wrapper>
-    </>
+    </Body>
   
 
   );
@@ -112,6 +112,7 @@ const Container = styled.div`
     margin: 10px 0;
     gap: 10px;
     border-radius: 5px;
+
 `
 const Left = styled.div`
 position: relative;
@@ -121,10 +122,9 @@ flex-direction: column;
 margin: 10px;
 padding: 45px 0;
 height: 180px;
-color: #B38CFC;
-/* background-color: #F0EBE3; */
+color: #111111;
 border-radius: 5px;
-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
 
 `
 const Right = styled.div`
@@ -134,15 +134,15 @@ margin: 10px;
 padding: 10px;
 justify-content: start;
 flex-direction: column;
-/* background-color: #F0EBE3; */
 border-radius: 5px;
-   
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
 
 `
 const Wrapper = styled.div`
-  max-width: 800px;
+  max-width: 900px;
+  padding: 10px 20px;
   margin: 0 auto;
+  background-color: rgb(250,251,253);
 `
 
 const SearchDiv = styled.div`
@@ -162,12 +162,12 @@ const InputBox= styled.input`
   border-radius: 5px;
   font-size: 16px;
   font-weight: 500;
-  color: #B38CFC;
+  color: #111111;
   background-color: transparent;
   ::placeholder{
     color: gray;
     font-size: 16px;
-   color: #B38CFC;
+   color: #111111;
 
   }
   `
@@ -185,14 +185,14 @@ const Select = styled.select`
   padding: 10px;
   border-radius: 5px;
   font-size: 15px;
-  color: #B38CFC;
+  color: #111111;
 background-color: transparent;
 
 `
 const Options = styled.option`
   margin: 0 10px;
   width: 80%;
-  color: #B38CFC;
+  color: #111111;
   
 
 `
@@ -222,7 +222,7 @@ const Date = styled.span`
   left: 0;
   right: 0;
   margin: auto;
-  color: #B38CFC;
+  color: #111111;
 
 `
 const InfoContainer = styled.div`
@@ -233,7 +233,7 @@ const InfoContainer = styled.div`
 const Key = styled.h2`
   flex: 2;
   font-size: 16px;
-  color: #B38CFC;
+  color: #111111;
 
 
   
@@ -243,7 +243,7 @@ const Value = styled.p`
 flex: 10;
 font-size: 16px;
 font-weight: 500;
-color: #B38CFC;
+color: #111111;
 
 
 `
@@ -258,7 +258,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-around;
   /* border-bottom: 1px solid #B38CFC; */
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
   background-color: #fff;
 
   h1{
@@ -279,4 +279,11 @@ const RightHeader = styled.div`
     font-weight: 800;
 
   }
+`
+
+const Body = styled.div`
+  /* background-image: url("./images/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh; */
 `
