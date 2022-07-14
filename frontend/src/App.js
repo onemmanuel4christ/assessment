@@ -1,120 +1,106 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./App.css";
 import { useQuery, gql } from "@apollo/client";
 import { useState } from "react";
 import styled from 'styled-components'
 
-const GET_USERS = gql`
-  query Users($usersInput: UsersInputFilter) {
-    users(input: $usersInput) {
-     date
+const GET_ALL_USERS = gql`
+  query Users {
+    users{
       id
       name
-      type
       status
+      type
+      date
     }
   }
 `;
-
-function useUserFilters() {
-  const [filters, _updateFilter] = useState({ 
-    id: undefined, 
-    name: undefined 
-    
-  });
-
-  const updateFilter = (filterType, value) => {
-    _updateFilter({
-      [filterType]: value,
-    });
-  };
-
-  return {
-    models: { filters },
-    operations: { updateFilter },
-  };
-}
-
-const typeFilters = (e) =>{
-console.log(e.target.value)
-}
 function App() {
-  const { operations, models } = useUserFilters();
+  const [searchTerm, setSearchTerm] = useState("")
+  const [qStatus, setQStatus] = useState("")
+  const [qType, setQType] = useState("")
 
-  const { data, loading, error, refetch } = useQuery(GET_USERS);
-
+  const { data, loading, error } = useQuery(GET_ALL_USERS);
+  const [users, setUsers] = useState(data?.users??[]);
   if (loading) return <div>Loading</div>;
   if (error) return <div>error</div>;
 
+  const mutateData = (params = "") => {
+       const result = params
+      ? data.users.filter(val => val.status.toLowerCase().includes(params) || val.name.toLowerCase().includes(params) || val.type.toLowerCase().includes(params))
+      : data.users;
+    return setUsers(result)
+  };
+  
+  const filterData = (val)=>{
+   return mutateData(val )
+  }
   return (
-    <Wrapper>
-      {data ? <>
-        <h1 style={{textAlign: 'center', margin: '20px'}}>Frontend Assesment</h1>
-      <SearchDiv>
-        <InputBox
-          onChange={(e) => operations.updateFilter("name", e.target.value)}
-          type="string"
-          placeholder='Search by name '
-        />
-         <Button
-        onClick={() =>
-          refetch({
-            usersInput: { status: models.filters.name },
-          })
-        }
-      >
-        Search
-      </Button>
-      </SearchDiv>
-        <FilterDiv>
-            <Select onChange={typeFilters}>
-              <Options>Filter by status</Options>
-              <Options value="saving">Successful</Options>
-              <Options value="current">Pending</Options>
-              <Options value="current">Failed</Options>
-            </Select>
-            <Select onChange={typeFilters}>
-              <Options>Filter by Types</Options>
-              <Options value="saving">Saving</Options>
-              <Options value="current">Current</Options>
-              <Options value="current">Fixed</Options>
-            </Select>
-        </FilterDiv>
-          {data.users.map((user) => (
-        <Container>
-        <Left>
-          <Date>{user.date}</Date>
-          <Avatar src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIhCBq-WV5kdxy5e-8fgzaYKejJFYOUnTt1Q&usqp=CAU' alt='user image' />
-        </Left>
-        <Right>
-          <InfoContainer>
-            <Key>Id:</Key>
-            <Value>{user.id}</Value>
-          </InfoContainer>
-          
-          <InfoContainer>
-            <Key>Name:</Key>
-            <Value>{user.name}</Value>
-          </InfoContainer>
-
-          <InfoContainer>
-            <Key>Status:</Key>
-            <Value>{user.status}</Value>
-          </InfoContainer>
-
-
-          <InfoContainer>
-            <Key>Type:</Key>
-            <Value>{user.type}</Value>
-          </InfoContainer>
-
-        </Right>
-        </Container>
-      ))}
-      </> : <p>No Data found please try again later</p>}
-
+    <>
+     <Header>
+        <h1>Frontend Assesment</h1>
+        <RightHeader>
+        <a href="mailto:onyekachionuoha20@gmail.com">Send me a mail</a>
+        <a href="tel:+2347068513219">Click to Call my phone</a>
+        </RightHeader>
+      </Header>
+      <Wrapper>
      
-    </Wrapper>
+     <SearchDiv>
+       <InputBox
+         onChange={(e) =>{setSearchTerm(e.target.value); filterData(e.target.value)}}
+         type="text"
+         placeholder='Search by name '
+       /> 
+     </SearchDiv>
+       <FilterDiv>
+       <Select onChange={(e) => {setQStatus(e.target.value); filterData(e.target.value)}}>
+             <Options>Filter by status</Options>
+             <Options value="successful">Successful</Options>
+             <Options value="pending">Pending</Options>
+             <Options value="failed">Failed</Options>
+           </Select>
+           <Select onChange={(e) => {setQType(e.target.value); filterData(e.target.value)}}>
+             <Options>Filter by Types</Options>
+             <Options value="saving">Saving</Options>
+             <Options value="current">Current</Options>
+             <Options value="current">Fixed</Options>
+           </Select>
+       </FilterDiv>
+         {users.map((user) => (
+       <Container key={user.id}>
+       <Left>
+         <Date>{user.date}</Date>
+         <Avatar src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIhCBq-WV5kdxy5e-8fgzaYKejJFYOUnTt1Q&usqp=CAU' alt='user image' />
+       </Left>
+       <Right>
+         <InfoContainer>
+           <Key>Id:</Key>
+           <Value>{user.id}</Value>
+         </InfoContainer>
+         
+         <InfoContainer>
+           <Key>Name:</Key>
+           <Value>{user.name}</Value>
+         </InfoContainer>
+
+         <InfoContainer>
+           <Key>Status:</Key>
+           <Value>{user.status}</Value>
+         </InfoContainer>
+
+
+         <InfoContainer>
+           <Key>Type:</Key>
+           <Value>{user.type}</Value>
+         </InfoContainer>
+
+       </Right>
+       </Container>
+     ))}
+   </Wrapper>
+    </>
+  
 
   );
 }
@@ -135,13 +121,11 @@ flex-direction: column;
 margin: 10px;
 padding: 45px 0;
 height: 180px;
-background-color: #fff;
-  :hover{
-    transform: translateY(-10px);
-    transition: all 0.5s ease;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+color: #B38CFC;
+/* background-color: #F0EBE3; */
+border-radius: 5px;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
-  }
 `
 const Right = styled.div`
 flex: 10;
@@ -150,13 +134,11 @@ margin: 10px;
 padding: 10px;
 justify-content: start;
 flex-direction: column;
-background-color: #fff;
-:hover{
-    transform: translateY(-10px);
-    transition: all 0.5s ease;
+/* background-color: #F0EBE3; */
+border-radius: 5px;
+   
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
-  }
 `
 const Wrapper = styled.div`
   max-width: 800px;
@@ -177,27 +159,18 @@ const InputBox= styled.input`
   outline: none;
   padding: 10px;
   font-size: 15px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-radius: 5px;
   font-size: 16px;
   font-weight: 500;
+  color: #B38CFC;
+  background-color: transparent;
   ::placeholder{
     color: gray;
     font-size: 16px;
+   color: #B38CFC;
+
   }
   `
-
-const Button = styled.button`
-  padding: 10px;
-  border-top-right-radius: 5px;
-  border-top-right-radius: 5px;
-  outline: none;
-  border: 0;
-  background-color: paleturquoise;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-`
 
 const FilterDiv = styled.div`
   margin-top: 20px;
@@ -212,10 +185,16 @@ const Select = styled.select`
   padding: 10px;
   border-radius: 5px;
   font-size: 15px;
+  color: #B38CFC;
+background-color: transparent;
+
 `
 const Options = styled.option`
   margin: 0 10px;
   width: 80%;
+  color: #B38CFC;
+  
+
 `
 
 const Avatar = styled.img`
@@ -225,6 +204,11 @@ const Avatar = styled.img`
   border-radius: 50%;
   align-self: center;
   object-fit:cover;
+    :hover{
+    width: 70px;
+    height: 70px;
+    transition: all 1s ease;
+  }
 `
 
 const Date = styled.span`
@@ -238,6 +222,8 @@ const Date = styled.span`
   left: 0;
   right: 0;
   margin: auto;
+  color: #B38CFC;
+
 `
 const InfoContainer = styled.div`
   display: flex;
@@ -247,6 +233,9 @@ const InfoContainer = styled.div`
 const Key = styled.h2`
   flex: 2;
   font-size: 16px;
+  color: #B38CFC;
+
+
   
 `
 
@@ -254,4 +243,40 @@ const Value = styled.p`
 flex: 10;
 font-size: 16px;
 font-weight: 500;
+color: #B38CFC;
+
+
+`
+const Header = styled.div`
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  height: 86px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* border-bottom: 1px solid #B38CFC; */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 15px;
+  background-color: #fff;
+
+  h1{
+    color: #B38CFC;
+    font-size: 24px;
+    font-weight: 800;
+  }
+`
+
+const RightHeader = styled.div`
+  display: flex;
+  gap: 10px;
+  
+  a{
+    text-decoration: none;
+    color: #B38CFC;
+    font-size: 16px;
+    font-weight: 800;
+
+  }
 `

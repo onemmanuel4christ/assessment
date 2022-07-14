@@ -9,7 +9,7 @@ const CustomerList = [
     {
         id: 2,
         name: "Ayo Tunde",
-        type: "Currnent",
+        type: "Current",
         status: "Pending",
         date: "01-12-2021"
     },
@@ -30,7 +30,7 @@ const CustomerList = [
     {
         id: 5,
         name: "Abdul Malam",
-        type: "Currnent",
+        type: "Current",
         status: "Pending",
         date: "21-12-2020"
     },
@@ -51,7 +51,7 @@ const CustomerList = [
     {
         id: 8,
         name: "Simisola Bakare",
-        type: "Currnent",
+        type: "Current",
         status: "Pending",
         date: "01-12-2000"
     },
@@ -72,7 +72,7 @@ const CustomerList = [
     {
         id: 11,
         name: "Tunde Martha",
-        type: "Currnent",
+        type: "Current",
         status: "Pending",
         date: "01-12-2021"
     },
@@ -93,7 +93,7 @@ const CustomerList = [
     {
         id: 14,
         name: "Adam Eve",
-        type: "Currnent",
+        type: "Current",
         status: "Pending",
         date: "01-12-2021"
     },
@@ -114,7 +114,7 @@ const CustomerList = [
     {
         id: 17,
         name: "Onuoha Amaka",
-        type: "Currnent",
+        type: "Current",
         status: "Pending",
         date: "12-12-2021"
     },
@@ -135,7 +135,7 @@ const CustomerList = [
     {
         id: 20,
         name: "Nmasi Kul",
-        type: "Currnent",
+        type: "Current",
         status: "Pending",
         date: "01-12-2021"
     },

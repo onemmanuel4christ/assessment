@@ -9,13 +9,8 @@ const typeDefs = gql`
         date: String
   }
 
-  input UsersInputFilter {
-    status: String
-    name: String
-  }
-
-  type Query {
-    users(input: UsersInputFilter): [User]
+   type Query {
+    users: [User!]!
   }
 `
 
